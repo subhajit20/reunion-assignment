@@ -1,10 +1,12 @@
 const express = require("express");
 var bodyParser = require('body-parser');
 const cors = require('cors');
+require('dotenv').config();
 const startMongo = require('./db/db');
 
 // import routes
 const propertyRoute = require('./routes/property.routes/property.routes');
+const authRoute = require('./routes/auth.routes/Auth.routes');
 
 const app = express();
 const PORT = 3000;
@@ -20,6 +22,8 @@ app.use(bodyParser.urlencoded({
 }))
 
 app.use('/api', propertyRoute);
+app.use('/api', authRoute);
+
 app.get('/', (req, res) => {
     res.json({
         msg: "Hello..."
