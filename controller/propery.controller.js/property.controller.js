@@ -144,6 +144,5 @@ module.exports = {
     getUserProperty,
     addProperty,
     updateProperty,
-    updateProperty,
     deletProperty
 }
