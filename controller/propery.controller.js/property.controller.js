@@ -24,7 +24,7 @@ const getAllProperty = async(req, res, next) => {
 const getUserProperty = async(req, res, next) => {
     try {
         const allUserProperties = await Property.find({
-            customerId:req.id
+            customerId: req.id
         });
 
         if (allUserProperties.length > 0) {
@@ -43,33 +43,33 @@ const getUserProperty = async(req, res, next) => {
     }
 }
 
-const addProperty = async (res,res,next) =>{
-    try{
+const addProperty = async(req, res, next) => {
+    try {
         const isCustomer = await Customer.findOne({
-            email:req.email
+            email: req.email
         })
-        if(isCustomer){
-            const newProperty = new Property({...req.body,userId:isCustomer._id});
+        if (isCustomer) {
+            const newProperty = new Property({...req.body, userId: isCustomer._id });
             newProperty.save();
 
             isCustomer.customer_properties.push(newProperty._id);
             isCustomer.save();
 
             return res.status(200).json({
-                msg:"Property created succesfully..."
+                msg: "Property created succesfully..."
             })
-        }else{
+        } else {
             throw "Invalid user";
         }
-    }catch(e){
+    } catch (e) {
         return res.status(300).json({
-            error:"Invalid user"
+            error: "Invalid user"
         })
     }
 }
 
-const updateProperty = async (res,res,next) =>{
-    try{
+const updateProperty = async(req, res, next) => {
+    try {
         const {
             propertyId,
             Property_Name,
@@ -79,62 +79,63 @@ const updateProperty = async (res,res,next) =>{
             location
         } = req.body;
 
-            const isProperty = Property.find({
-                propertyId:propertyId,
-            });
+        const isProperty = await Property.findOne({
+            _id: propertyId,
+        });
 
-            if(isProperty){
-                isProperty.Property_Name = Property_Name,
+        if (isProperty) {
+            isProperty.Property_Name = Property_Name,
                 isProperty.Property_Price = Property_Price,
                 isProperty.beds = beds;
-                isProperty.bathrooms = bathrooms;
-                isProperty.location = location;
-                isProperty.save();
+            isProperty.bathrooms = bathrooms;
+            isProperty.location = location;
+            await isProperty.save();
 
-                return res.status(200).json({
-                    msg:"Property updated successfully",
-                })
-            }else{
-                return res.status(200).json({
-                    msg:"Property not found",
-                })
-            }
-    }catch(e){
+            return res.status(200).json({
+                msg: "Property updated successfully",
+            })
+        } else {
+            return res.status(200).json({
+                msg: "Property not found",
+            })
+        }
+    } catch (e) {
+        console.log(e)
         return res.status(300).json({
-            error:"Invalid user"
+            error: "Invalid user"
         })
     }
 }
 
-const deletProperty = async (req,res,next) =>{
-    try{
+const deletProperty = async(req, res, next) => {
+    try {
         const {
             propertyId,
         } = req.body;
 
         const isCustomer = await Customer.findOne({
-            email:req.email
+            email: req.email
         });
 
-        if(isCustomer){
-                isCustomer.customer_properties.pull(propertyId);
-                isCustomer.save();
+        if (isCustomer) {
+            isCustomer.customer_properties.pull(propertyId);
+            isCustomer.save();
 
-                await Property.deleteOne({
-                    propertyId:propertyId,
-                });
+            await Property.deleteOne({
+                _id: propertyId,
+            });
 
-                return res.status(200).json({
-                    msg:"Property deleted successfully",
-                })
-            }else{
-                return res.status(200).json({
-                    msg:"Property not found",
-                })
-            }
-    }catch(e){
+            return res.status(200).json({
+                msg: "Property deleted successfully",
+            })
+        } else {
+            return res.status(200).json({
+                msg: "Property not found",
+            })
+        }
+    } catch (e) {
         return res.status(300).json({
-            error:"Invalid user"
+            error: "Invalid user"
         })
     }
 }
