@@ -23,7 +23,7 @@ const propertScema = new mongoose.Schema({
         type: String,
         trim: true
     },
-    userId:{
+    customerId:{
         type:mongoose.Types.ObjectId,
         ref:'Customer'
     }

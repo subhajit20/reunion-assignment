@@ -23,11 +23,13 @@ const getAllProperty = async(req, res, next) => {
 
 const getUserProperty = async(req, res, next) => {
     try {
-        const allProperties = await Property.find();
+        const allUserProperties = await Property.find({
+            customerId:req.id
+        });
 
-        if (allProperties.length > 0) {
+        if (allUserProperties.length > 0) {
             return res.status(500).json({
-                properties: allProperties
+                properties: allUserProperties
             })
         } else {
             return res.status(500).json({

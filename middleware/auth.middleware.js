@@ -9,6 +9,7 @@ const isAuthenticatedUser = async (req,res,next) =>{
 
         if(isValidToken){
             req.email = isValidToken.email;
+            req.id = isValidToken.id;
             next();
         }else{
             throw "Invalid token..."
