@@ -1,3 +1,3 @@
 module.exports = {
-    dbUri: "mongodb://localhost:27017/reunion"
+    mongoUri: "mongodb://localhost:27017/reunion"
 }

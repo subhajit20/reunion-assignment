@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const { dbUri } = require('../config/dev');
+const { mongoUri } = require('../config/dev');
 
 
 const startMongo = () => {
-    mongoose.connect(dbUri, {
+    mongoose.connect(mongoUri, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         }).then(() => console.log("MongoDB Connected..."))
