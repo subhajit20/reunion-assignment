@@ -24,6 +24,10 @@ const propertScema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    userId:{
+        type:mongoose.Types.ObjectId,
+        ref:'Customer'
+    }
 })
 
 const Property = mongoose.model('Property', propertScema);

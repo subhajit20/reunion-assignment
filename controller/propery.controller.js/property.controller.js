@@ -43,12 +43,13 @@ const getUserProperty = async(req, res, next) => {
 
 const addProperty = async (res,res,next) =>{
     try{
-        const newProperty = new Property(req.body);
-        newProperty.save();
         const isCustomer = await Customer.findOne({
             email:req.email
         })
         if(isCustomer){
+            const newProperty = new Property({...req.body,userId:isCustomer._id});
+            newProperty.save();
+
             isCustomer.customer_properties.push(newProperty._id);
             isCustomer.save();
 
