@@ -14,9 +14,10 @@ const loginController = async (req, res,next) => {
 
             if(isValidPassword){
                 const token = await jwt.sign({
-                    email:email
-                },process.env.JWT_SECRET)
-
+                    email:email,
+                },process.env.JWT_SECRET,{
+                    expiresIn:'1m'
+                })
 
                 return res.status(200).json({
                     customer:checkUserExist,

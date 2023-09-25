@@ -44,20 +44,29 @@ const getUserProperty = async(req, res, next) => {
 const addProperty = async (res,res,next) =>{
     try{
         const newProperty = new Property(req.body);
-
-        const customer = await Customer.findOne({
+        newProperty.save();
+        const isCustomer = await Customer.findOne({
             email:req.email
         })
+        if(isCustomer){
+            isCustomer.customer_properties.push(newProperty._id);
+            isCustomer.save();
 
-        if(customer){
-            customer.properties.push(newProperty._id);
+            return res.status(200).json({
+                msg:"Property created succesfully..."
+            })
+        }else{
+            throw "Invalid user";
         }
     }catch(e){
-
+        return res.status(300).json({
+            error:"Invalid user"
+        })
     }
 }
 
 module.exports = {
     getAllProperty,
-    getUserProperty
+    getUserProperty,
+    addProperty
 }
