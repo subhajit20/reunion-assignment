@@ -2,9 +2,10 @@ const jwt = require('jsonwebtoken');
 
 const isAuthenticatedUser = async (req,res,next) =>{
     try{
-        const {access_token} = req.header;
+        const {access_token} = req.headers['authorization'];
         console.log(access_token);
-        const isValidToken = await jwt.verify(access_token,process.env.JWT_SECRET);
+        const mainToken = userToken.split(' ')[1];
+        const isValidToken = await jwt.verify(mainToken,process.env.JWT_SECRET);
 
         if(isValidToken){
             req.email = isValidToken.email;
@@ -14,7 +15,7 @@ const isAuthenticatedUser = async (req,res,next) =>{
         }
     }catch(e){
         return res.status(500).json({
-            error:"Token is not found"
+            error:"Token is invalid"
         })
     }
 }
