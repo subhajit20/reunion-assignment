@@ -66,8 +66,82 @@ const addProperty = async (res,res,next) =>{
     }
 }
 
+const updateProperty = async (res,res,next) =>{
+    try{
+        const {
+            propertyId,
+            Property_Name,
+            Property_Price,
+            beds,
+            bathrooms,
+            location
+        } = req.body;
+
+            const isProperty = Property.find({
+                propertyId:propertyId,
+            });
+
+            if(isProperty){
+                isProperty.Property_Name = Property_Name,
+                isProperty.Property_Price = Property_Price,
+                isProperty.beds = beds;
+                isProperty.bathrooms = bathrooms;
+                isProperty.location = location;
+                isProperty.save();
+
+                return res.status(200).json({
+                    msg:"Property updated successfully",
+                })
+            }else{
+                return res.status(200).json({
+                    msg:"Property not found",
+                })
+            }
+    }catch(e){
+        return res.status(300).json({
+            error:"Invalid user"
+        })
+    }
+}
+
+const deletProperty = async (req,res,next) =>{
+    try{
+        const {
+            propertyId,
+        } = req.body;
+
+        const isCustomer = await Customer.findOne({
+            email:req.email
+        });
+
+        if(isCustomer){
+                isCustomer.customer_properties.pull(propertyId);
+                isCustomer.save();
+
+                await Property.deleteOne({
+                    propertyId:propertyId,
+                });
+
+                return res.status(200).json({
+                    msg:"Property deleted successfully",
+                })
+            }else{
+                return res.status(200).json({
+                    msg:"Property not found",
+                })
+            }
+    }catch(e){
+        return res.status(300).json({
+            error:"Invalid user"
+        })
+    }
+}
+
 module.exports = {
     getAllProperty,
     getUserProperty,
-    addProperty
+    addProperty,
+    updateProperty,
+    updateProperty,
+    deletProperty
 }

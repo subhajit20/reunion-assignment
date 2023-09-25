@@ -13,7 +13,6 @@ const propertScema = new mongoose.Schema({
     },
     location: {
         type: String,
-        required: true,
         trim: true
     },
     beds: {
